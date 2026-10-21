@@ -26,10 +26,15 @@ jobs:
         run: uv run --frozen python -m pytest tests -q
       - name: Scripted execution and audit smoke test
         if: ${{ !cancelled() }}
-        run: uv run --frozen python offline_smoke.py
+        run: uv run --frozen python -m scripts.offline_smoke
+      - name: Validate the three experiment plans
+        run: |
+          uv run --frozen python -m scripts.run_batch configs/full_approve.json
+          uv run --frozen python -m scripts.run_batch configs/full_escalate.json
+          uv run --frozen python -m scripts.run_batch configs/hybrid.json
       - name: Recompute archived tables and check source hashes
         if: ${{ !cancelled() }}
-        run: uv run --frozen python scripts/reproduce_results.py
+        run: uv run --frozen python -m scripts.reproduce_results
       - name: Save verification report
         if: always()
         uses: actions/upload-artifact@v4

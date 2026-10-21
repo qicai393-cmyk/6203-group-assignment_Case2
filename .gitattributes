@@ -1,0 +1,4 @@
+* text=auto eol=lf
+archive/** -text
+results/** -text
+*.zip binary

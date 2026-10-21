@@ -2,7 +2,7 @@ import unittest
 from pathlib import Path
 import sys
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from run_batch import build_commands
+from scripts.run_batch import build_commands
 
 
 class BatchTests(unittest.TestCase):
@@ -27,3 +27,15 @@ class BatchTests(unittest.TestCase):
         config = self.config()
         config.pop('reviewer_model')
         with self.assertRaises(ValueError): build_commands(config, Path('mock-output'))
+
+    def test_delivered_configs_resolve_paths_and_preserve_experiment_grid(self):
+        import json
+
+        root = Path(__file__).resolve().parents[1]
+        for name, expected_count in [('full_approve', 2), ('full_escalate', 10), ('hybrid', 10)]:
+            with self.subTest(config=name):
+                config = json.loads((root / 'configs' / f'{name}.json').read_text())
+                self.assertTrue((root / config['prices']).is_file())
+                commands = build_commands(config, Path('mock-output'))
+                self.assertEqual(len(commands), expected_count)
+                self.assertEqual(sum('--attack' in command for command in commands), expected_count // 2)

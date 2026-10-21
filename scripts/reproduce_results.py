@@ -19,7 +19,7 @@ SOURCE_PATHS = {
     "approval_reviewer.py": "src/agentdojo/approval_reviewer.py",
     "approval_usage.py": "src/agentdojo/approval_usage.py",
     "authorization_reviewer.txt": "src/agentdojo/prompts/authorization_reviewer.txt",
-    "run_batch.py": "run_batch.py",
+    "run_batch.py": "scripts/run_batch.py",
 }
 TABLES = (
     "summary.csv", "per_task.csv", "summary_verified.csv",
@@ -83,7 +83,7 @@ def main():
         log = output / (Path(script).stem + ".txt")
         with log.open("w", encoding="utf-8") as stream:
             result = subprocess.run(
-                [sys.executable, str(ROOT / script), str(archive / "batches")],
+                [sys.executable, str(ROOT / "scripts" / script), str(archive / "batches")],
                 cwd=tables, env=environment, stdout=stream, stderr=subprocess.STDOUT, check=False,
             )
         if result.returncode:

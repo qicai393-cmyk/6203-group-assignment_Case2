@@ -43,8 +43,8 @@
     }
   ],
   "reviewer_model": "openai/gpt-5.6-luna",
-  "prices": "prices.json",
+  "prices": "configs/prices.json",
   "policies": [
-    "full_approve"
+    "full_escalate"
   ]
 }
