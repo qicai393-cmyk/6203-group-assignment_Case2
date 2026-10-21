@@ -1,0 +1,10 @@
+{
+  "openai/gpt-4o-mini": {
+    "input_per_million": 0.15,
+    "output_per_million": 0.6
+  },
+  "openai/gpt-5.6-luna": {
+    "input_per_million": 0.2,
+    "output_per_million": 1.2
+  }
+}

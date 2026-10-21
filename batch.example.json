@@ -1,0 +1,9 @@
+{
+  "benchmark_version": "v1.2.2",
+  "model": "openai-compatible",
+  "policies": ["full_approve", "full_escalate"],
+  "budgets": [0, 1, 2, 4, 8],
+  "suites": [{"name": "workspace", "user_tasks": ["user_task_0"], "injection_tasks": ["injection_task_0"]}],
+  "modes": [{"attack": null}, {"attack": "tool_knowledge"}],
+  "reviewer_model": "replace_with_your_reviewer_model"
+}

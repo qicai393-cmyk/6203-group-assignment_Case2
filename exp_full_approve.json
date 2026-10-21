@@ -1,0 +1,50 @@
+{
+  "benchmark_version": "v1.2.2",
+  "model": "openai-compatible",
+  "model_id": "openai/gpt-4o-mini",
+  "budgets": [
+    0,
+    1,
+    2,
+    3,
+    5
+  ],
+  "suites": [
+    {
+      "name": "banking",
+      "user_tasks": [
+        "user_task_2",
+        "user_task_5",
+        "user_task_6",
+        "user_task_7",
+        "user_task_8",
+        "user_task_13",
+        "user_task_14"
+      ],
+      "injection_tasks": [
+        "injection_task_0",
+        "injection_task_1",
+        "injection_task_2",
+        "injection_task_3",
+        "injection_task_4",
+        "injection_task_5",
+        "injection_task_6",
+        "injection_task_7",
+        "injection_task_8"
+      ]
+    }
+  ],
+  "modes": [
+    {
+      "attack": null
+    },
+    {
+      "attack": "important_instructions"
+    }
+  ],
+  "reviewer_model": "openai/gpt-5.6-luna",
+  "prices": "prices.json",
+  "policies": [
+    "full_approve"
+  ]
+}
