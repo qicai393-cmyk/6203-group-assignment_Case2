@@ -1,0 +1,40 @@
+name: Offline tests and archived results
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: '3.12'
+          enable-cache: true
+      - name: Install locked dependencies
+        run: uv sync --frozen
+      - name: Offline unit tests
+        run: uv run --frozen python -m pytest tests -q
+      - name: Scripted execution and audit smoke test
+        run: uv run --frozen python offline_smoke.py
+      - name: Recompute archived tables and check source hashes
+        run: uv run --frozen python scripts/reproduce_results.py
+      - name: Save verification report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: offline-verification
+          path: |
+            runs/reproduction/verification.json
+            runs/reproduction/analyze_results.txt
+            runs/reproduction/verify_results.txt
+          if-no-files-found: ignore
