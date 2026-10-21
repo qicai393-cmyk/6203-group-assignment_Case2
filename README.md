@@ -14,13 +14,14 @@ cd 6203-group-assignment_Case2
 python -m venv .venv
 ```
 
-Activate with `.\.venv\Scripts\Activate.ps1` in Windows PowerShell, or `source .venv/bin/activate` on macOS/Linux, then install:
+Activate with `.\.venv\Scripts\Activate.ps1` in Windows PowerShell, or `source .venv/bin/activate` on macOS/Linux, then install the locked environment used by the automated verification:
 
 ```bash
-python -m pip install -e . pytest
+python -m pip install uv
+uv sync --frozen
 ```
 
-For the dependency versions recorded in `uv.lock`, use `uv sync --frozen` instead of the pip installation, and run commands in that environment (or prefix them with `uv run --frozen`). Pip resolves current compatible dependencies; it does not recreate the exact locked environment.
+Run commands inside that environment, or prefix them with `uv run --frozen`. An alternative `python -m pip install -e . pytest` resolves current compatible dependencies and does not recreate the exact locked environment; it was not the environment used for the automated verification.
 
 ## Model configuration
 
@@ -52,6 +53,8 @@ python offline_smoke.py
 The smoke test uses a scripted calendar agent and writes `runs/offline-smoke/audit.jsonl`, without model calls. It checks execution/logging plumbing; it does not measure hybrid-policy security.
 
 The `Offline tests and archived results` GitHub Actions workflow runs these checks and the archived-table comparison with locked dependencies. The inherited upstream `Lint` workflow reports existing source-style issues separately; those source files are retained to preserve the delivered experiment hashes.
+
+[Verification on 2026-10-21](https://github.com/qicai393-cmyk/6203-group-assignment_Case2/actions/runs/39605315914): **102 tests passed**, smoke test passed, **7/7 core hashes matched**, and **all five archived CSV tables matched** after recomputation with the locked dependencies on Python 3.12. No new model API experiments were performed for this verification.
 
 ## Three experiment commands
 
