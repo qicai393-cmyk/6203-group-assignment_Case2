@@ -14,7 +14,7 @@ from agentdojo.approval_usage import record_completion
 from agentdojo.benchmark import benchmark_suite_with_injections
 from agentdojo.functions_runtime import FunctionCall
 from agentdojo.logging import OutputLogger
-from test_approval import _ApprovingReviewer, _Environment, _make_writer
+from tests.test_approval import _ApprovingReviewer, _Environment, _make_writer
 
 
 class ExtendedApprovalTests(unittest.TestCase):
