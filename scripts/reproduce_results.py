@@ -62,13 +62,14 @@ def main():
     archive = output / "raw"
     with zipfile.ZipFile(ROOT / "results/raw_logs.zip") as package:
         for info in package.infolist():
-            name = PurePosixPath(info.filename.replace("\\", "/"))
+            normalized = info.filename.replace("\\", "/")
+            name = PurePosixPath(normalized)
             target = (archive / name).resolve()
             if (name.is_absolute() or ":" in name.as_posix()
                     or not target.is_relative_to(archive.resolve())
                     or (info.external_attr >> 16) & 0o170000 == 0o120000):
                 raise SystemExit("Unsafe archive path")
-            if info.is_dir():
+            if normalized.endswith("/"):
                 target.mkdir(parents=True, exist_ok=True)
             else:
                 target.parent.mkdir(parents=True, exist_ok=True)
