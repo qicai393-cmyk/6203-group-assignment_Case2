@@ -1,5 +1,0 @@
-Category,Component,Runs,Calls,Input tokens,Output tokens,Cost (USD)
-Precheck (excluded from formal experiment costs),agent,99,371,373290,14896,0.0649
-Precheck (excluded from formal experiment costs),policy,99,157,214401,29457,0.0782
-Precheck (excluded from formal experiment costs),reviewer,99,119,182751,26038,0.0678
-Precheck total (excluded from formal experiment costs),Total,99,647,770442,70391,0.211
