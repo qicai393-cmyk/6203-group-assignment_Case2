@@ -1,0 +1,7 @@
+Policy,Condition,Notes,k=0 HITL_verified,k=0 escalations_all,k=1 HITL_verified,k=1 escalations_all,k=2 HITL_verified,k=2 escalations_all,k=3 HITL_verified,k=3 escalations_all,k=5 HITL_verified,k=5 escalations_all
+Full Approval,Attack,Full Approval observed at k=0 only,0,0,,,,,,,,
+Full Approval,No Attack,Full Approval observed at k=0 only,0,0,,,,,,,,
+Full Escalation,Attack,HITL_verified sums escalations in verified-safe runs,0,0,16,63,38,120,76,172,96,237
+Full Escalation,No Attack,HITL_verified sums escalations in verified-safe runs,0,0,2,7,7,13,15,18,15,18
+Custom Policy,Attack,HITL_verified sums escalations in verified-safe runs,0,0,23,35,32,49,35,46,35,50
+Custom Policy,No Attack,HITL_verified sums escalations in verified-safe runs,0,0,3,4,4,6,3,5,3,5
