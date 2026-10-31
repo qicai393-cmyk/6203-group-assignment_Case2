@@ -21,6 +21,8 @@ htmlcov/
 # Generated experiments and local tooling
 /runs/
 /attacks/
+/agent/runs/
+/agent/attacks/
 .claude/
 .idea/
 .vscode/

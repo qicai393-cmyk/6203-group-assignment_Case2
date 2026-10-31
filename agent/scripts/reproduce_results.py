@@ -12,6 +12,7 @@ from collections import Counter
 from pathlib import Path, PurePosixPath
 
 ROOT = Path(__file__).resolve().parents[1]
+RESULTS = ROOT.parent / "results"
 SOURCE_PATHS = {
     "team_policy.py": "team_policy.py",
     "hybrid_policy.txt": "prompts/hybrid_policy.txt",
@@ -40,15 +41,15 @@ def read_table(path):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", default="runs/reproduction",
-                        help="New output directory, relative to the repository root")
+                        help="New output directory, relative to the agent project directory")
     args = parser.parse_args()
     output = (ROOT / args.output).resolve()
-    if output == ROOT or output.is_relative_to(ROOT / "results"):
+    if output == ROOT or output.is_relative_to(RESULTS):
         parser.error("Choose a new output directory outside the delivered results folder")
     if output.exists():
         parser.error("Output already exists; use --output runs/reproduction-2")
 
-    with (ROOT / "results/SOURCE_PROVENANCE.csv").open(encoding="utf-8-sig", newline="") as stream:
+    with (RESULTS / "SOURCE_PROVENANCE.csv").open(encoding="utf-8-sig", newline="") as stream:
         sources = list(csv.DictReader(stream))
     source_checks = {}
     for row in sources:
@@ -60,7 +61,7 @@ def main():
 
     output.mkdir(parents=True)
     archive = output / "raw"
-    with zipfile.ZipFile(ROOT / "results/raw_logs.zip") as package:
+    with zipfile.ZipFile(RESULTS / "raw_logs.zip") as package:
         for info in package.infolist():
             normalized = info.filename.replace("\\", "/")
             name = PurePosixPath(normalized)
@@ -92,7 +93,7 @@ def main():
     table_checks = {}
     for name in TABLES:
         fields, rows, count = read_table(tables / name)
-        expected_fields, expected_rows, expected_count = read_table(ROOT / "results" / name)
+        expected_fields, expected_rows, expected_count = read_table(RESULTS / name)
         matches = fields == expected_fields and rows == expected_rows
         table_checks[name] = {"matches": matches, "rows": count, "expected_rows": expected_count}
         print(f"{'PASS' if matches else 'FAIL'} {name}: {count} rows")

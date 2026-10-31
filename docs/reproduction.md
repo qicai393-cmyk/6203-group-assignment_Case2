@@ -1,14 +1,17 @@
 # Reproduction guide
 
-Run the commands below from the repository root. See the [project overview](../README.md) and [result definitions](results.md).
+The Python project is in [`agent/`](../agent/). From an existing checkout, run `cd agent` before the project commands below. This also applies to the commands printed in the report. See the [project overview](../README.md) and [result definitions](results.md).
+
+The report and archived evidence retain their original contents. The report's source paths such as `src/`, `scripts/`, `configs/`, and `team_policy.py` now live under `agent/`; `results/`, `docs/`, and `archive/` remain at the repository root.
 
 ## Installation
 
-Use Python 3.12 (the delivered `.python-version` specifies 3.12.2):
+Use Python 3.12 (the delivered `agent/.python-version` specifies 3.12.2). For a fresh checkout:
 
 ```bash
 git clone https://github.com/qicai393-cmyk/6203-group-assignment_Case2.git
 cd 6203-group-assignment_Case2
+cd agent
 python -m venv .venv
 ```
 
@@ -23,7 +26,7 @@ Run commands inside that environment, or prefix them with `uv run --frozen`. An 
 
 ## Model configuration
 
-Offline checks and archived-result recomputation need no credentials. For new API experiments, copy [`configs/.env.example`](../configs/.env.example) to `.env` at the repository root (`Copy-Item configs/.env.example .env` in PowerShell, or `cp configs/.env.example .env` on macOS/Linux), then fill in your own key:
+Offline checks and archived-result recomputation need no credentials. From `agent/`, copy [`configs/.env.example`](../agent/configs/.env.example) to `.env` (`Copy-Item configs/.env.example .env` in PowerShell, or `cp configs/.env.example .env` on macOS/Linux) for new API experiments, then fill in your own key. The resulting file is `agent/.env`:
 
 ```dotenv
 OPENAI_COMPATIBLE_BASE_URL=https://openrouter.ai/api/v1
@@ -37,24 +40,24 @@ These model identifiers are recorded in the delivered raw logs. They do not esta
 
 **Do not omit or leave `AGENTDOJO_POLICY_MODEL` empty.** Without it, `HybridPolicy` escalates calls with known tool metadata instead of running the intended model-based decision, invalidating the intended hybrid comparison. Missing/unknown tool metadata has its own deny/escalate handling.
 
-`.gitignore` excludes `.env`, `.venv`, and `runs/`. Keep real keys local. Account identifiers and passwords in the banking fixtures/logs are synthetic benchmark data. `configs/prices.json` contains delivered cost assumptions, not a current provider quote. Model, prompt, endpoint, dependency, or price changes must be recorded as a new experiment.
+The repository's `.gitignore` excludes `agent/.env`, `agent/.venv`, and `agent/runs/`. Keep real keys local. Account identifiers and passwords in the banking fixtures/logs are synthetic benchmark data. `configs/prices.json` contains delivered cost assumptions, not a current provider quote. Model, prompt, endpoint, dependency, or price changes must be recorded as a new experiment.
 
 ## Offline checks
 
-Run from the repository root, inside the installed environment:
+Run from `agent/`, inside the installed environment:
 
 ```bash
 uv run --frozen python -m pytest tests -q
 uv run --frozen python -m scripts.offline_smoke
 ```
 
-The smoke test uses a scripted calendar agent and writes `runs/offline-smoke/audit.jsonl`, without model calls. It checks execution/logging plumbing; it does not measure hybrid-policy security.
+The smoke test uses a scripted calendar agent and writes `runs/offline-smoke/audit.jsonl` under `agent/`, without model calls. It checks execution/logging plumbing; it does not measure hybrid-policy security.
 
 
 
 ## Three experiment commands
 
-Preview the plans without API calls:
+Preview the plans from `agent/` without API calls:
 
 ```bash
 uv run --frozen python -m scripts.run_batch configs/full_approve.json
@@ -72,15 +75,17 @@ uv run --frozen python -m scripts.run_batch configs/full_escalate.json --execute
 uv run --frozen python -m scripts.run_batch configs/hybrid.json --execute
 ```
 
-Each prints a new batch directory under `runs/batches/`. Record all three directory paths. `k` is the per-task review budget; requests requiring review are denied after that budget is exhausted. The reviewer is an LLM simulation, so HITL load measures model review calls, not actual human work.
+Each prints a new batch directory under `agent/runs/batches/` (shown as `runs/batches/` when running inside `agent/`). Record all three directory paths. `k` is the per-task review budget; requests requiring review are denied after that budget is exhausted. The reviewer is an LLM simulation, so HITL load measures model review calls, not actual human work.
 
 ## Recompute delivered results without API calls
+
+From `agent/`:
 
 ```bash
 uv run --frozen python -m scripts.reproduce_results
 ```
 
-This checks seven core source/prompt hashes against `results/SOURCE_PROVENANCE.csv`, extracts `results/raw_logs.zip` into a new `runs/reproduction/` directory, runs both original analysis scripts, and compares all CSV cell values and duplicate-row counts against the delivered tables. Row/column order, BOM, and line endings are ignored. Expected output:
+This checks seven core source/prompt hashes against the repository-root `results/SOURCE_PROVENANCE.csv`, extracts `results/raw_logs.zip` into a new `agent/runs/reproduction/` directory, runs both original analysis scripts, and compares all CSV cell values and duplicate-row counts against the delivered tables. The helper resolves the original results relative to its own location; they do not need to be copied into `agent/`. Row/column order, BOM, and line endings are ignored. Expected output:
 
 ```text
 Source checks: 7/7 match
@@ -91,9 +96,9 @@ PASS per_task_verified.csv: 770 rows
 PASS ground_truth_reference.csv: 13 rows
 ```
 
-The helper saves `verification.json`, `analyze_results.txt`, and `verify_results.txt` in `runs/reproduction/`. It leaves delivered results unchanged. To repeat, choose a new directory with `--output runs/reproduction-2`.
+The helper saves `verification.json`, `analyze_results.txt`, and `verify_results.txt` in `agent/runs/reproduction/`. It leaves delivered results unchanged. To repeat, choose a new directory with `--output runs/reproduction-2`; relative output paths are resolved under `agent/`.
 
-For newly collected logs, replace the `BATCH_*` placeholders with the three actual directory names:
+For newly collected logs, stay in `agent/` and replace the `BATCH_*` placeholders with the three actual directory names:
 
 ```bash
 uv run --frozen python -m scripts.analyze_results runs/batches/BATCH_APPROVE runs/batches/BATCH_ESCALATE runs/batches/BATCH_HYBRID

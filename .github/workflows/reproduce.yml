@@ -14,12 +14,17 @@ jobs:
   verify:
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: agent
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v6
         with:
           python-version: '3.12'
           enable-cache: true
+          working-directory: agent
+          cache-dependency-glob: agent/uv.lock
       - name: Install locked dependencies
         run: uv sync --frozen
       - name: Offline unit tests
@@ -41,7 +46,7 @@ jobs:
         with:
           name: offline-verification
           path: |
-            runs/reproduction/verification.json
-            runs/reproduction/analyze_results.txt
-            runs/reproduction/verify_results.txt
+            agent/runs/reproduction/verification.json
+            agent/runs/reproduction/analyze_results.txt
+            agent/runs/reproduction/verify_results.txt
           if-no-files-found: ignore

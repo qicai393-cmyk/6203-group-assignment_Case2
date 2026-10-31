@@ -12,14 +12,16 @@
 
 | Component | Implementation |
 | --- | --- |
-| Task agent and tool execution | [`src/agentdojo/agent_pipeline/`](../src/agentdojo/agent_pipeline/) |
-| Approval gate and baseline policies | [`src/agentdojo/approval.py`](../src/agentdojo/approval.py) |
-| Hybrid authorization policy | [`team_policy.py`](../team_policy.py), [`prompts/hybrid_policy.txt`](../prompts/hybrid_policy.txt) |
-| Simulated authorization reviewer | [`src/agentdojo/approval_reviewer.py`](../src/agentdojo/approval_reviewer.py) |
-| Usage and reviewer-assessment logging | [`src/agentdojo/approval_usage.py`](../src/agentdojo/approval_usage.py) |
-| Benchmark entry point | [`src/agentdojo/scripts/approval_benchmark.py`](../src/agentdojo/scripts/approval_benchmark.py) |
-| Experiment grid planner | [`scripts/run_batch.py`](../scripts/run_batch.py) |
-| Aggregate metrics and post-hoc verification | [`scripts/analyze_results.py`](../scripts/analyze_results.py), [`scripts/verify_results.py`](../scripts/verify_results.py) |
+| Task agent and tool execution | [`src/agentdojo/agent_pipeline/`](../agent/src/agentdojo/agent_pipeline/) |
+| Approval gate and baseline policies | [`src/agentdojo/approval.py`](../agent/src/agentdojo/approval.py) |
+| Hybrid authorization policy | [`team_policy.py`](../agent/team_policy.py), [`prompts/hybrid_policy.txt`](../agent/prompts/hybrid_policy.txt) |
+| Simulated authorization reviewer | [`src/agentdojo/approval_reviewer.py`](../agent/src/agentdojo/approval_reviewer.py) |
+| Usage and reviewer-assessment logging | [`src/agentdojo/approval_usage.py`](../agent/src/agentdojo/approval_usage.py) |
+| Benchmark entry point | [`src/agentdojo/scripts/approval_benchmark.py`](../agent/src/agentdojo/scripts/approval_benchmark.py) |
+| Experiment grid planner | [`scripts/run_batch.py`](../agent/scripts/run_batch.py) |
+| Aggregate metrics and post-hoc verification | [`scripts/analyze_results.py`](../agent/scripts/analyze_results.py), [`scripts/verify_results.py`](../agent/scripts/verify_results.py) |
+
+Implementation paths in this table are relative to [`agent/`](../agent/), the Python project directory.
 
 ## Authorization and evaluation boundaries
 
@@ -34,8 +36,8 @@ before comparing completion rates or review load.
 
 ## Repository conventions
 
-- Run commands from the repository root with `python -m scripts.<command>`.
-- Keep new run outputs under ignored `runs/`; retain the delivered `results/` as the reference snapshot.
+- Enter `agent/` from the repository root, then run commands with `python -m scripts.<command>`. The report's existing commands use this working directory now.
+- Keep new run outputs under ignored `agent/runs/`; retain the repository-root `results/` as the reference snapshot.
 - Record changes to model IDs, prompts, configuration, and prices with each new experiment.
-- Keep `.env` and real API credentials local.
+- Keep `.env`, `.venv`, and real API credentials local under `agent/`.
 - `archive/` retains historical context. Its old paths, status statements, and deployment workflows are not current operating instructions.
