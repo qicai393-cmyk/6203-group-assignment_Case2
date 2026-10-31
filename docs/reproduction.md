@@ -23,7 +23,7 @@ Run commands inside that environment, or prefix them with `uv run --frozen`. An 
 
 ## Model configuration
 
-Offline checks and archived-result recomputation need no credentials. For new API experiments, copy `.env.example` to `.env` (`Copy-Item .env.example .env` in PowerShell, or `cp .env.example .env` on macOS/Linux), then fill in your own key:
+Offline checks and archived-result recomputation need no credentials. For new API experiments, copy [`configs/.env.example`](../configs/.env.example) to `.env` at the repository root (`Copy-Item configs/.env.example .env` in PowerShell, or `cp configs/.env.example .env` on macOS/Linux), then fill in your own key:
 
 ```dotenv
 OPENAI_COMPATIBLE_BASE_URL=https://openrouter.ai/api/v1

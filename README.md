@@ -4,6 +4,17 @@
 
 An AgentDojo experiment comparing unconditional approval, full escalation, and a hybrid authorization policy under prompt-injection attacks. This repository includes the integrated implementation, experiment configurations, tests, and archived results.
 
+## Review guide
+
+| Material | Open |
+| --- | --- |
+| Project report | [PE6203_ClassC_Group1_Report.pdf](PE6203_ClassC_Group1_Report.pdf) |
+| Presentation | [Group 1 slides](docs/PE6203_ClassC_Group1.pptx) |
+| Results and evidence | [Metric definitions](docs/results.md), [verified results](results/summary_verified.csv), [raw logs](results/raw_logs.zip) |
+| Statistical analysis | [Summary](results/analysis/01_Statistical_Analysis_Summary.md), [figures and supporting tables](results/analysis/) |
+| Implementation | [Hybrid policy](team_policy.py), [AgentDojo source](src/agentdojo/), [architecture](docs/architecture.md) |
+| Reproduction | [Setup and offline verification](docs/reproduction.md) |
+
 ## Quick start
 
 Use Python 3.12 and [uv](https://docs.astral.sh/uv/). From the repository root:
@@ -17,7 +28,7 @@ uv run --frozen python -m scripts.reproduce_results
 
 These checks require no API key. Archived-result verification checks seven source hashes and compares five regenerated CSV tables, including both 770-row task tables.
 
-To run new model experiments, configure a local `.env` from [`.env.example`](.env.example), including `AGENTDOJO_POLICY_MODEL`, then follow the [reproduction guide](docs/reproduction.md).
+To run new model experiments, configure a local `.env` from [`configs/.env.example`](configs/.env.example), including `AGENTDOJO_POLICY_MODEL`, then follow the [reproduction guide](docs/reproduction.md).
 
 ## Repository map
 
@@ -25,14 +36,16 @@ To run new model experiments, configure a local `.env` from [`.env.example`](.en
 | --- | --- |
 | [`src/agentdojo/`](src/agentdojo/) | AgentDojo framework, approval gate, authorization reviewer, and task suites |
 | [`team_policy.py`](team_policy.py), [`prompts/`](prompts/) | Hybrid policy entry point and policy prompt |
-| [`configs/`](configs/) | Three experiment configurations, an example grid, and historical price assumptions |
+| [`configs/`](configs/) | Experiment configurations, environment template, example grid, and historical price assumptions |
 | [`scripts/`](scripts/) | Experiment runners, analysis, smoke tests, and result verification |
-| [`results/`](results/) | Delivered summaries, per-task outcomes, raw logs, and source hashes |
+| [`results/`](results/) | Delivered summaries, per-task outcomes, raw logs, source hashes, and statistical analysis |
 | [`tests/`](tests/) | Offline behavior and integration tests |
-| [`docs/`](docs/) | Reproduction steps, architecture, and result definitions |
+| [`docs/`](docs/) | Presentation, reproduction steps, architecture, result definitions, and citation |
 | [`archive/`](archive/) | Earlier handoffs and upstream reference material |
 
 `team_policy.py` remains at the root to preserve the original `team_policy:HybridPolicy` entry point and experiment hash. Run project commands as `python -m scripts.<command>` from the repository root.
+
+The project report stays at the root for direct access, alongside the README, license, and files required by Python and Git tooling.
 
 ## Experiment design
 
@@ -59,4 +72,4 @@ Archived statistics can be recomputed from the included logs. Fresh LLM API call
 
 ## Attribution
 
-Based on [AgentDojo](https://github.com/ethz-spylab/agentdojo) 0.1.35, commit [`089ed468cf3ed0322acc66b0211f26d9d90dbf60`](https://github.com/ethz-spylab/agentdojo/commit/089ed468cf3ed0322acc66b0211f26d9d90dbf60). The original [MIT license](LICENSE) and [citation](CITATION.bib) are preserved. See the [upstream README](archive/upstream/README.md) for the original project.
+Based on [AgentDojo](https://github.com/ethz-spylab/agentdojo) 0.1.35, commit [`089ed468cf3ed0322acc66b0211f26d9d90dbf60`](https://github.com/ethz-spylab/agentdojo/commit/089ed468cf3ed0322acc66b0211f26d9d90dbf60). The original [MIT license](LICENSE) and [citation](docs/CITATION.bib) are preserved. See the [upstream README](archive/upstream/README.md) for the original project.
